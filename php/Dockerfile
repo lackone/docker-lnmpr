@@ -8,35 +8,7 @@ ARG REPOSITORIES
 RUN sed -i "s/dl-cdn.alpinelinux.org/${REPOSITORIES}/g" /etc/apk/repositories
 
 #安装依赖库
-RUN apk --update add \
-        autoconf \
-        g++ \
-        build-base \
-        linux-headers \
-        libaio-dev \
-        zlib-dev \
-        curl \
-        curl-dev \
-        git \
-        gettext-dev \
-        freetype-dev \
-        libjpeg-turbo-dev \
-        libmcrypt-dev \
-        libpng-dev \
-        libtool \
-        libbz2 \
-        bzip2 \
-        bzip2-dev \
-        libstdc++ \
-        libxslt-dev \
-        openldap-dev \
-        imagemagick-dev \
-        libzip-dev \
-        make \
-        zip \
-        unzip \
-        wget \
-        libmemcached-dev
+RUN apk --update add --no-cache --virtual .build-deps autoconf g++ libtool make curl-dev gettext-dev linux-headers
 
 RUN docker-php-ext-install \
         bcmath \
@@ -254,10 +226,7 @@ RUN if [ ${INSTALL_COMPOSER} = true ]; then \
 ;fi
 
 #清除安装文件
-RUN apk del build-base \
-    	linux-headers \
-    	libaio-dev \
-    && rm -rf /var/cache/apk/*
+RUN apk del .build-deps && docker-php-source delete && rm -rf /tmp/pear
 
 VOLUME /var/www
 WORKDIR /var/www
