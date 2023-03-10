@@ -90,7 +90,7 @@ services:
       - ${PHP_FASTCGI_PORT}:9000
     volumes:
       - ${WWW_ROOT_DIR}:/wwwroot
-      - ${PHP_LOG_DIR}:/var/log.php
+      - ${PHP_LOG_DIR}:/var/log/php
       - ${PHP_CONF_DIR}/${PHP_VERSION}/php.ini:/usr/local/etc/php/php.ini
       - ${PHP_CONF_DIR}/${PHP_VERSION}/php-fpm.conf:/usr/local/etc/php-fpm.conf
       - ${PHP_CONF_DIR}/${PHP_VERSION}/php-fpm.d:/usr/local/etc/php-fpm.d
