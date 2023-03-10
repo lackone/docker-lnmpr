@@ -1,0 +1,112 @@
+version: "3"
+
+#定义服务
+services:
+  nginx:
+    image: nginx:${NGINX_VERSION}
+    container_name: nginx
+    restart: always
+    ports:
+      - ${NGINX_HTTP_PORT}:80
+      - ${NGINX_HTTPS_PORT}:443
+    volumes:
+      - ${NGINX_HTML_DIR}:/usr/share/nginx/html
+      - ${NGINX_CONF_FILE}:/etc/nginx/nginx.conf
+      - ${NGINX_CONFD_DIR}:/etc/nginx/conf.d
+      - ${NGINX_FASTCGI_PARAMS}:/etc/nginx/fastcgi_params
+      - ${NGINX_LOG_DIR}:/var/log/nginx
+    networks:
+      - net
+
+  mysql:
+    image: mysql:${MYSQL_VERSION}
+    container_name: mysql
+    restart: always
+    ports:
+      - ${MYSQL_PORT}:3306
+    volumes:
+      - ${MYSQL_CONFD_DIR}:/etc/mysql/conf.d
+      - ${MYSQL_DATA_DIR}:/var/lib/mysql
+      - ${MYSQL_LOG_DIR}:/var/log/mysql
+    command:
+      - --default-authentication-plugin=mysql_native_password
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - TZ=${TZ}
+    networks:
+      - net
+
+  php:
+    container_name: php
+    restart: always
+    build:
+      context: ./php
+      args:
+        - PHP_VERSION=${PHP_VERSION}
+        - TZ=${TZ}
+        - INSTALL_PCNTL=${PHP_INSTALL_PCNTL}
+        - INSTALL_OPCACHE=${PHP_INSTALL_OPCACHE}
+        - INSTALL_EXIF=${PHP_INSTALL_EXIF}
+        - INSTALL_BCMATH=${PHP_INSTALL_BCMATH}
+        - INSTALL_CALENDAR=${PHP_INSTALL_CALENDAR}
+        - INSTALL_GETTEXT=${PHP_INSTALL_GETTEXT}
+        - INSTALL_SHMOP=${PHP_INSTALL_SHMOP}
+        - INSTALL_SYSVMSG=${PHP_INSTALL_SYSVMSG}
+        - INSTALL_SYSVSEM=${PHP_INSTALL_SYSVSEM}
+        - INSTALL_SYSVSHM=${PHP_INSTALL_SYSVSHM}
+        - INSTALL_PDO_ODBC=${PHP_INSTALL_PDO_ODBC}
+        - INSTALL_PDO_PGSQL=${PHP_INSTALL_PDO_PGSQL}
+        - INSTALL_PGSQL=${PHP_INSTALL_PGSQL}
+        - INSTALL_DBA=${PHP_INSTALL_DBA}
+        - INSTALL_INTL=${PHP_INSTALL_INTL}
+        - INSTALL_BZ2=${PHP_INSTALL_BZ2}
+        - INSTALL_SOAP=${PHP_INSTALL_SOAP}
+        - INSTALL_XSL=${PHP_INSTALL_XSL}
+        - INSTALL_XMLRPC=${PHP_INSTALL_XMLRPC}
+        - INSTALL_SNMP=${PHP_INSTALL_SNMP}
+        - INSTALL_PSPELL=${PHP_INSTALL_PSPELL}
+        - INSTALL_TIDY=${PHP_INSTALL_TIDY}
+        - INSTALL_GMP=${PHP_INSTALL_GMP}
+        - INSTALL_IMAP=${PHP_INSTALL_IMAP}
+        - INSTALL_LDAP=${PHP_INSTALL_LDAP}
+        - INSTALL_ZIP=${PHP_INSTALL_ZIP}
+        - INSTALL_REDIS=${PHP_INSTALL_REDIS}
+        - INSTALL_REDIS_VERSION=${PHP_INSTALL_REDIS_VERSION}
+        - INSTALL_MONGODB=${PHP_INSTALL_MONGODB}
+        - INSTALL_MONGODB_VERSION=${PHP_INSTALL_MONGODB_VERSION}
+        - INSTALL_MEMCACHED=${PHP_INSTALL_MEMCACHED}
+        - INSTALL_MEMCACHED_VERSION=${PHP_INSTALL_MEMCACHED_VERSION}
+        - INSTALL_SWOOLE=${PHP_INSTALL_SWOOLE}
+        - INSTALL_SWOOLE_VERSION=${PHP_INSTALL_SWOOLE_VERSION}
+        - INSTALL_EVENT=${PHP_INSTALL_EVENT}
+        - INSTALL_EVENT_VERSION=${PHP_INSTALL_EVENT_VERSION}
+        - INSTALL_COMPOSER=${PHP_INSTALL_COMPOSER}
+    ports:
+      - ${PHP_FASTCGI_PORT}:9000
+    volumes:
+      - ${WWW_ROOT_DIR}:/var/www
+      - ${PHP_LOG_DIR}:/var/log.php
+      - ${PHP_CONF_DIR}/${PHP_VERSION}/php.ini:/usr/local/etc/php/php.ini
+      - ${PHP_CONF_DIR}/${PHP_VERSION}/php-fpm.conf:/usr/local/etc/php-fpm.conf
+      - ${PHP_CONF_DIR}/${PHP_VERSION}/php-fpm.d:/usr/local/etc/php-fpm.d
+    networks:
+      - net
+
+  redis:
+    image: redis:${REDIS_VERSION}
+    container_name: redis
+    restart: always
+    ports:
+      - ${REDIS_PORT}:6379
+    volumes:
+      - ${REDIS_CONF_FILE}:/etc/redis.conf
+      - ${REDIS_DATA_DIR}:/data
+      - ${REDIS_LOG_DIR}:/var/log/redis
+    entrypoint: [ "redis-server", "/etc/redis.conf" ]
+    networks:
+      - net
+
+networks:
+  net:
