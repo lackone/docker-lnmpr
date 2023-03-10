@@ -197,7 +197,7 @@ RUN if [ ${INSTALL_ZIP} = true ]; then \
 ARG INSTALL_EVENT=false
 ARG INSTALL_EVENT_VERSION
 RUN if [ ${INSTALL_EVENT} = true ]; then \
-    pecl install redis-${INSTALL_EVENT_VERSION} \
+    pecl install event-${INSTALL_EVENT_VERSION} \
     && rm -rf /tmp/pear \
     && docker-php-ext-enable event \
 ;fi
