@@ -23,6 +23,7 @@ services:
     image: mysql:${MYSQL_VERSION}
     container_name: mysql
     restart: always
+    user: root:root
     ports:
       - ${MYSQL_PORT}:3306
     volumes:
