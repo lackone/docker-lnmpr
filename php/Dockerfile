@@ -194,6 +194,7 @@ RUN if [ ${INSTALL_ZIP} = true ]; then \
 ;fi
 
 #安装event
+# https://github.com/docker-library/php/issues/857
 ARG INSTALL_EVENT=false
 ARG INSTALL_EVENT_VERSION
 RUN if [ ${INSTALL_EVENT} = true ]; then \
@@ -235,7 +236,7 @@ ARG INSTALL_SWOOLE_VERSION
 RUN if [ ${INSTALL_SWOOLE} = true ]; then \
     pecl install swoole-${INSTALL_SWOOLE_VERSION} \
     && rm -rf /tmp/pear \
-    && docker-php-ext-enable swoole \
+    && docker-php-ext-enable --ini-name zz-swoole.ini swoole \
 ;fi
 
 #安装composer
