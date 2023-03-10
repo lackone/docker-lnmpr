@@ -228,8 +228,8 @@ RUN if [ ${INSTALL_COMPOSER} = true ]; then \
 #清除安装文件
 RUN apk del .build-deps && docker-php-source delete && rm -rf /tmp/pear
 
-VOLUME /var/www
-WORKDIR /var/www
+VOLUME /wwwroot
+WORKDIR /wwwroot
 
 EXPOSE 9000
 
