@@ -138,11 +138,11 @@ RUN if [ ${INSTALL_XSL} = true ]; then \
     docker-php-ext-install xsl \
 ;fi
 
-ARG INSTALL_XMLRPC=false
-RUN if [ ${INSTALL_XMLRPC} = true ]; then \
-    apk add --no-cache libxml2-dev libxslt-dev && \
-    docker-php-ext-install xmlrpc \
-;fi
+#ARG INSTALL_XMLRPC=false
+#RUN if [ ${INSTALL_XMLRPC} = true ]; then \
+#    apk add --no-cache libxml2-dev libxslt-dev && \
+#    docker-php-ext-install xmlrpc \
+#;fi
 
 ARG INSTALL_SNMP=false
 RUN if [ ${INSTALL_SNMP} = true ]; then \
