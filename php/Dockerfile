@@ -199,7 +199,7 @@ ARG INSTALL_EVENT_VERSION
 RUN if [ ${INSTALL_EVENT} = true ]; then \
     pecl install event-${INSTALL_EVENT_VERSION} \
     && rm -rf /tmp/pear \
-    && docker-php-ext-enable event \
+    && docker-php-ext-enable --ini-name zz-event.ini event \
 ;fi
 
 #安装redis
