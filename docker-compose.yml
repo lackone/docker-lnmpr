@@ -111,5 +111,18 @@ services:
     networks:
       - net
 
+  rabbitmq:
+    image: rabbitmq:${RABBITMQ_VERSION}
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - ${RABBITMQ_HOST_PORT_CLIENT}:5672
+      - ${RABBITMQ_HOST_PORT_SERVER}:15672
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+    networks:
+      - net
+
 networks:
   net:
