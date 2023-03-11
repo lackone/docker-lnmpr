@@ -1,6 +1,6 @@
 # docker-lnmpr
 
-基于docker的nginx+mysql+php+redis
+基于docker的 nginx + mysql + php + redis + rabbitmq
 
 ### 一、如何使用
 
@@ -22,6 +22,8 @@ php的版本，只支持大号版本，如 5.6，7.1，7.2，7.3，7.4，8.0，8
 mysql的版本，任意指定，默认密码 123456
 
 redis的版本，任意指定
+
+rabbitmq的版本，任意指定
 
 ### 三、常用命令
 
