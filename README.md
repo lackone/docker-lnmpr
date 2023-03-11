@@ -44,7 +44,59 @@ docker compose rm 服务名
 docker compose down
 ```
 
-### 四、如果出现如下错误：
+### 四、配置一个虚拟主机
+
+在 nginx/conf.d 目录下创建一个 www.conf 文件，内容如下：
+
+```
+server {
+    listen 80;
+    server_name 192.168.1.113;
+    root /wwwroot;
+
+    index index.html index.htm index.php;
+
+    charset utf-8;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location ~ \.php$ {
+        fastcgi_pass php:9000;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+
+    location ~ /\.(?!well-known).* {
+        deny all;
+    }
+}
+```
+
+server_name 根据自已的IP来配。
+
+然后在 wwwroot 目录下，创建一个 index.php 文件，内容如下：
+
+```php
+<?php 
+    phpinfo();
+?>
+```
+
+然后重启容器
+
+```
+docker compose restart nginx
+```
+
+如果不生效，强制重建容器
+
+```
+docker compose up -d --force-recreate nginx
+```
+
+### 五、如果出现如下错误：
 
 ```
 WARNING: Ignoring https:///alpine/v3.17/main: DNS lookup error
