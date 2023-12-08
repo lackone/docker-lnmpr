@@ -5,7 +5,7 @@ ARG TZ
 ARG REPOSITORIES
 
 #替换仓库地址
-RUN sed -i "s/dl-cdn.alpinelinux.org/${REPOSITORIES}/g" /etc/apk/repositories
+#RUN sed -i "s/dl-cdn.alpinelinux.org/${REPOSITORIES}/g" /etc/apk/repositories
 
 #安装依赖库
 RUN apk --update add \
