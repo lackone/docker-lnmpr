@@ -110,7 +110,17 @@ WARNING: Ignoring https:///alpine/v3.17/community: DNS lookup error
 ```json
 {
   "dns": [
-    "8.8.8.8"
+    "8.8.8.8", "114.114.114.114"
   ]
 }
+```
+
+```
+ERROR: unable to select packages error on Alpine Linux
+```
+
+请在 php/Dockerfile 文件中打开
+```
+RUN echo "http://${REPOSITORIES}/alpine/v3.18/main" >> /etc/apk/repositories
+RUN echo "http://${REPOSITORIES}/alpine/edge/main" >> /etc/apk/repositories
 ```
